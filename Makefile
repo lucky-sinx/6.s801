@@ -152,6 +152,8 @@ UPROGS=\
 	$U/_helloworld\
 	$U/_sleep\
 	$U/_pingpong\
+	$U/_primes\
+
 
 
 
