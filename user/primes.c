@@ -3,7 +3,7 @@
 #include "user/user.h"
 
 void rightProcess(int* pipeEnd){
-    close(pipeEnd[1]);
+    close(pipeEnd[1]);//关闭进程不需要的文件描述符
     int t;
     int firstPrime=0;
     int hasRight=0;
@@ -23,7 +23,7 @@ void rightProcess(int* pipeEnd){
                         rightProcess(rightPipe);
                         exit(0);
                     }else{
-                        close(rightPipe[0]);
+                        close(rightPipe[0]);//关闭进程不需要的文件描述符
                     }
                 }
                 write(rightPipe[1],&t,sizeof(t));//输出给右子进程
@@ -31,15 +31,17 @@ void rightProcess(int* pipeEnd){
         }
     }
     if(hasRight){
-        close(rightPipe[1]);
+        close(rightPipe[1]);//关闭pipe写，让右子进程可以在11行退出
         wait(0);
     }
-    close(pipeEnd[0]);
+    close(pipeEnd[0]);//关闭进程不需要的文件描述符
+    exit(0);
 }
 
+
+//第一个进程，负责输出到下一进程
 int main(int argc, char *argv[])
 {
-    //第一个进程，负责输出到下一进程
     int pipeEnd[2];
     const int N=35;
     pipe(pipeEnd);
@@ -52,7 +54,6 @@ int main(int argc, char *argv[])
     }else if(pid==0){
         //右邻居，负责接受这里的输出
         rightProcess(pipeEnd);
-        exit(0);
     }else{
         //将2-35输出
         close(pipeEnd[0]);
@@ -61,6 +62,6 @@ int main(int argc, char *argv[])
         }
         close(pipeEnd[1]);
         wait(0);
-        exit(0);
     }
+    exit(0);
 }
