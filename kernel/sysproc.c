@@ -102,8 +102,3 @@ sys_trace(void){
   argint(0,&(p->trace_mask));
   return 0;
 }
-
-uint64
-sys_info(void){
-  return 0;
-}

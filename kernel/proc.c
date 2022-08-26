@@ -656,3 +656,15 @@ procdump(void)
     printf("\n");
   }
 }
+
+int get_proc_mem(void){
+  // 获取state字段不为UNUSED的进程数
+  int res=0;
+  struct proc *p;
+  for(p = proc; p < &proc[NPROC]; p++){
+    if(p->state != UNUSED){
+      res++;
+    }
+  }
+  return res;
+}
